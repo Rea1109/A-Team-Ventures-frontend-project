@@ -26,27 +26,28 @@ export default function SelectUI(props: SelectProps) {
   };
 
   return (
-    <div>
-      <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-checkbox-label">{props.label}</InputLabel>
-        <Select
-          labelId="demo-multiple-checkbox-label"
-          id="demo-multiple-checkbox"
-          multiple
-          value={props.category}
-          onChange={handleChangeMethod}
-          input={<OutlinedInput label={props.label} />}
-          renderValue={(selected) => selected.join(", ")}
-          MenuProps={MenuProps}
-        >
-          {props.categoryData.map((el) => (
-            <MenuItem key={el} value={el}>
-              <Checkbox checked={props.category.indexOf(el) > -1} />
-              <ListItemText primary={el} />
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </div>
+    <FormControl
+      sx={{ m: 1, width: props.width }}
+      style={{ margin: "0px 10px 20px 0px" }}
+    >
+      <InputLabel id="demo-multiple-checkbox-label">{props.label}</InputLabel>
+      <Select
+        labelId="demo-multiple-checkbox-label"
+        id="demo-multiple-checkbox"
+        multiple
+        value={props.category}
+        onChange={handleChangeMethod}
+        input={<OutlinedInput label={props.label} />}
+        renderValue={(selected) => selected.join(", ")}
+        MenuProps={MenuProps}
+      >
+        {props.categoryData.map((el) => (
+          <MenuItem key={el} value={el}>
+            <Checkbox checked={props.category.indexOf(el) > -1} />
+            <ListItemText primary={el} />
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 }

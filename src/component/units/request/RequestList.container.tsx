@@ -2,7 +2,21 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import SelectUI from "../../commons/select/Select.container";
 import Toogle from "../../commons/toggle/Toggle.container";
-import { MainWrapper, Header, Main } from "./RequestList.styles";
+import {
+  MainWrapper,
+  Header,
+  Main,
+  ItemWrapper,
+  Status,
+  Title,
+  ChatButton,
+  DetailButton,
+  Due,
+  FilterWrapper,
+  Refresh,
+  ToogleWrapper,
+} from "./RequestList.styles";
+import { v4 as uuidv4 } from "uuid";
 
 const METHOD = ["밀링", "선반"];
 const MATERIAL = [
@@ -69,41 +83,144 @@ const RequestList = () => {
     }
   };
 
-  const c = () => {
-    console.log(requestList);
+  const onClickRefresh = () => {
+    setMaterial([]);
+    setMethod([]);
   };
 
   return (
     <MainWrapper>
       <Header>
-        <h3>들어온 요청</h3>
-        <span>파트너님에게 딱 맞는 요청서를 찾아보세요</span>
-        <SelectUI
-          categoryData={METHOD}
-          label={"가공방식"}
-          category={method}
-          setCategory={setMethod}
-        />
-        <SelectUI
-          categoryData={MATERIAL}
-          label={"재료"}
-          category={material}
-          setCategory={setMaterial}
-        />
-        <Toogle
-          label="상담 중인 요청만 보기"
-          condition={condition}
-          setCondition={setCondition}
-        />
+        <div>
+          <h2>들어온 요청</h2>
+          <span>파트너님에게 딱 맞는 요청서를 찾아보세요</span>
+        </div>
+        <FilterWrapper>
+          <div>
+            <SelectUI
+              width={200}
+              categoryData={METHOD}
+              label={"가공방식"}
+              category={method}
+              setCategory={setMethod}
+            />
+            <SelectUI
+              width={100}
+              categoryData={MATERIAL}
+              label={"재료"}
+              category={material}
+              setCategory={setMaterial}
+            />
+            <Refresh onClick={onClickRefresh}>
+              <div>
+                <img src="/images/refresh_24px.png" alt="" />
+              </div>
+              <span>필터링 리셋</span>
+            </Refresh>
+          </div>
+          <ToogleWrapper>
+            <Toogle
+              label="상담 중인 요청만 보기"
+              condition={condition}
+              setCondition={setCondition}
+            />
+          </ToogleWrapper>
+        </FilterWrapper>
       </Header>
       <Main>
         {condition
           ? requestList
               .filter((el) => el.status === "상담중")
-              .map((item) => <div key={item.id}></div>)
-          : requestList
-              .filter((el) => el.status === "대기중")
-              .map((item) => <div key={item.id}></div>)}
+              .map((item) => (
+                <ItemWrapper key={uuidv4()}>
+                  <header>
+                    <Title>{item.title}</Title>
+                    <Status>{item.status}</Status>
+                  </header>
+                  <span>{item.client}</span> <br />
+                  <Due>{item.due}까지 납기</Due>
+                  <hr />
+                  <ul>
+                    <li>
+                      <div>도면개수</div>
+                      <div>
+                        <span>{item.count}</span>
+                      </div>
+                    </li>
+                    <li>
+                      <div>총 수량</div>
+                      <div>
+                        <span>{item.amount}</span>
+                      </div>
+                    </li>
+                    <li>
+                      <div>가공방식</div>
+                      <div>
+                        {item.method.map((el) => (
+                          <span key={uuidv4()}>{el}</span>
+                        ))}
+                      </div>
+                    </li>
+                    <li>
+                      <div>재료</div>
+                      <div>
+                        {item.material.map((el) => (
+                          <span key={uuidv4()}>{el}</span>
+                        ))}
+                      </div>
+                    </li>
+                  </ul>
+                  <footer>
+                    <DetailButton>요청내역보기</DetailButton>
+                    <ChatButton>채팅하기</ChatButton>
+                  </footer>
+                </ItemWrapper>
+              ))
+          : requestList.map((item) => (
+              <ItemWrapper key={uuidv4()}>
+                <header>
+                  <Title>{item.title}</Title>
+                  {item.status === "상담중" && <Status>{item.status}</Status>}
+                </header>
+                <span>{item.client}</span> <br />
+                <Due>{item.due}까지 납기</Due>
+                <hr />
+                <ul>
+                  <li>
+                    <div>도면개수</div>
+                    <div>
+                      <span>{item.count}</span>
+                    </div>
+                  </li>
+                  <li>
+                    <div>총 수량</div>
+                    <div>
+                      <span>{item.amount}</span>
+                    </div>
+                  </li>
+                  <li>
+                    <div>가공방식</div>
+                    <div>
+                      {item.method.map((el) => (
+                        <span key={uuidv4()}>{el}</span>
+                      ))}
+                    </div>
+                  </li>
+                  <li>
+                    <div>재료</div>
+                    <div>
+                      {item.material.map((el) => (
+                        <span key={uuidv4()}>{el}</span>
+                      ))}
+                    </div>
+                  </li>
+                </ul>
+                <footer>
+                  <DetailButton>요청내역보기</DetailButton>
+                  <ChatButton>채팅하기</ChatButton>
+                </footer>
+              </ItemWrapper>
+            ))}
       </Main>
     </MainWrapper>
   );

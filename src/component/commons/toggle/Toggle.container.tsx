@@ -1,4 +1,3 @@
-import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { Dispatch } from "react";
@@ -17,12 +16,10 @@ export default function Toogle({
   };
 
   return (
-    <FormGroup>
-      <FormControlLabel
-        control={<Switch />}
-        onChange={onChangeToogle}
-        label={label}
-      />
-    </FormGroup>
+    <FormControlLabel
+      control={<Switch />}
+      onChange={onChangeToogle}
+      label={label}
+    />
   );
 }
