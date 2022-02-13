@@ -6,6 +6,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
 import { SelectProps } from "./Select.types";
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -38,7 +39,11 @@ export default function SelectUI(props: SelectProps) {
         value={props.category}
         onChange={handleChangeMethod}
         input={<OutlinedInput label={props.label} />}
-        renderValue={(selected) => selected.join(", ")}
+        renderValue={
+          props.label === "재료"
+            ? () => `${props.label} (${props.category.length})`
+            : (selected) => selected.join(", ")
+        }
         MenuProps={MenuProps}
       >
         {props.categoryData.map((el) => (

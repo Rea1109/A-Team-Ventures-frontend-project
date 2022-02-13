@@ -6,7 +6,7 @@ const App = () => {
     <div
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
-      <Header></Header>
+      <Header />
       <RequestList></RequestList>
     </div>
   );

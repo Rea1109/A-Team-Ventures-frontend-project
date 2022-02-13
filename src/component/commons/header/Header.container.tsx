@@ -6,6 +6,8 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import styled from "@emotion/styled";
+import DrawersMenu from "./DrawerMenu";
+import { useState, KeyboardEvent, MouseEvent } from "react";
 
 const MenuButton = styled(IconButton)`
   display: none;
@@ -32,9 +34,12 @@ const InfoIcon = styled.span`
 `;
 
 export default function Header() {
-  const onClickMenu = () => {
-    console.log("test");
-  };
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDrawer =
+    (open: boolean) => (event: KeyboardEvent | MouseEvent) => {
+      setIsOpen(!isOpen);
+    };
 
   return (
     <Box sx={{ flexGrow: 1 }} style={{ width: "100%", maxWidth: "1400px" }}>
@@ -46,7 +51,7 @@ export default function Header() {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
-            onClick={onClickMenu}
+            onClick={toggleDrawer(false)}
           >
             <MenuIcon />
           </MenuButton>
@@ -66,6 +71,7 @@ export default function Header() {
           <InfoButton color="inherit">로그아웃</InfoButton>
         </Toolbar>
       </AppBar>
+      <DrawersMenu isOpen={isOpen} toggleDrawer={toggleDrawer} />
     </Box>
   );
 }
